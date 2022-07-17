@@ -37,6 +37,7 @@ public class ProjectSecurityConfig {
          */
 
         http.authorizeHttpRequests( (auth)->auth
+                .antMatchers("/user/exists").hasRole("ADMIN")
                 .antMatchers("/myAccount","/myBalance","/myLoans","/myCards").authenticated()
                 .antMatchers("/notices","/contact").permitAll()
         ).httpBasic(Customizer.withDefaults());
@@ -69,8 +70,10 @@ public class ProjectSecurityConfig {
         InMemoryUserDetailsManager userDetailsService = new InMemoryUserDetailsManager();
         UserDetails admin = User.withUsername("admin").password("12345").authorities("admin").build();
         UserDetails user = User.withUsername("coffeeprog").password("password123").authorities("read").build();
+        UserDetails bob = User.withUsername("bob").password("bob123").authorities("read").build();
         userDetailsService.createUser(admin);
         userDetailsService.createUser(user);
+        userDetailsService.createUser(bob);
         return userDetailsService;
     }
 
