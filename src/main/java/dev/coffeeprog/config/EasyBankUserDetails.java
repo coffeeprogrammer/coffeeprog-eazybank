@@ -25,4 +25,7 @@ public class EasyBankUserDetails implements UserDetailsService {
         }
         return new SecurityCustomer(customer.get(0));
     }
+
 }
+
+
