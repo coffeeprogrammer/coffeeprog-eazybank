@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import dev.coffeeprog.model.Customer;
 import dev.coffeeprog.model.Loans;
-import dev.coffeeprog.repository.LoanRepository
+import dev.coffeeprog.repository.LoanRepository;
 
 @RestController
 public class LoansController {
