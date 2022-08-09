@@ -1,6 +1,5 @@
 package dev.coffeeprog.controller;
 
-
 import dev.coffeeprog.model.Customer;
 import dev.coffeeprog.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,16 +16,12 @@ public class LoginController {
 
     @RequestMapping("/user")
     public Customer getUserDetailsAfterLogin(Principal user) {
-        try {
-            List<Customer> customers = customerRepository.findByEmail(user.getName());
-            if (customers.size() > 0) {
-                return customers.get(0);
-            } else {
-                return null;
-            }
-        } catch(Exception e) {
-            System.out.println(e);
+
+        List<Customer> customers = customerRepository.findByEmail(user.getName());
+        if (customers.size() > 0) {
+            return customers.get(0);
+        } else {
+            return null;
         }
-        return null;
     }
 }
