@@ -12,8 +12,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
+import java.util.Collections;
 
 // before version 5.7 this would have been an override on "extends WebSecurityConfigurerAdapter"
 // configure method rather than a bean like this...
@@ -30,6 +34,19 @@ public class ProjectSecurityConfig {
         return (SecurityFilterChain)http.build();
          */
 
+        http.cors().configurationSource(new CorsConfigurationSource() {
+            @Override
+            public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
+                CorsConfiguration config = new CorsConfiguration();
+                config.setAllowedOrigins(Collections.singletonList("http://localhost:4200"));
+                config.setAllowedMethods(Collections.singletonList("*"));
+                config.setAllowCredentials(true);
+                config.setAllowedHeaders(Collections.singletonList("*"));
+                config.setMaxAge(3600L);
+                return config;
+            }
+        })
+
         /**
          *      /myAccount - secured
          *      /myBalance - secured
@@ -39,7 +56,7 @@ public class ProjectSecurityConfig {
          *      /contact - not secured
          */
 
-        http.authorizeHttpRequests( (auth)->auth
+                .and().authorizeHttpRequests( (auth)->auth
                 .antMatchers("/myAccount","/myBalance","/myLoans","/myCards").authenticated()
                 .antMatchers("/notices","/contact").permitAll()
         ).httpBasic(Customizer.withDefaults());
